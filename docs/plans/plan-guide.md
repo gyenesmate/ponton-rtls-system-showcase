@@ -6,7 +6,7 @@ Short map of the work described in [`plan.txt`](plan.txt).
 
 | Area | Progress | Plan |
 |------|----------|------|
-| General | 0/56 | [`general-refactor.md`](general-refactor.md) |
+| General | 56/56 | [`general-refactor.md`](general-refactor.md) |
 | Rendering | no plan | — |
 | Grid system | no plan | — |
 | Scenario-driven showcase | no plan | — |

@@ -98,7 +98,7 @@ scripts/               # package-plugin, validate
 **Interfaces:**
 - Produces: project can `import` `.ts` files from JS; `npx tsc --noEmit` runs.
 
-- [ ] **Step 1: Add TypeScript dependencies**
+- [x] **Step 1: Add TypeScript dependencies**
 
 ```bash
 npm install -D typescript @types/node
@@ -106,7 +106,7 @@ npm install -D typescript @types/node
 
 Do not add a second package manager. Keep `three` and `vite` as today.
 
-- [ ] **Step 2: Add `tsconfig.json`**
+- [x] **Step 2: Add `tsconfig.json`**
 
 ```json
 {
@@ -131,13 +131,13 @@ Do not add a second package manager. Keep `three` and `vite` as today.
 }
 ```
 
-- [ ] **Step 3: Add `src/vite-env.d.ts`**
+- [x] **Step 3: Add `src/vite-env.d.ts`**
 
 ```typescript
 /// <reference types="vite/client" />
 ```
 
-- [ ] **Step 4: Convert Vite config to TypeScript**
+- [x] **Step 4: Convert Vite config to TypeScript**
 
 Create `vite.config.ts` (delete `vite.config.js`):
 
@@ -176,7 +176,7 @@ export default defineConfig({
 });
 ```
 
-- [ ] **Step 5: Add scripts**
+- [x] **Step 5: Add scripts**
 
 In `package.json` scripts:
 
@@ -187,7 +187,7 @@ In `package.json` scripts:
 
 Remove `check:grid` once `src/shared/grid.selfcheck.js` is gone (Task 9). Until then leave `check:grid` or delete if unused.
 
-- [ ] **Step 6: Verify tooling**
+- [x] **Step 6: Verify tooling**
 
 ```bash
 npm run typecheck
@@ -238,7 +238,7 @@ export type * from './types';
 
 Use kebab-case file names matching the target architecture (`grid-config.ts`, `spatial-engine.ts`, …). Preserve class/function names (`SpatialEngine`, `GridConfig`, …).
 
-- [ ] **Step 1: List inbound importers**
+- [x] **Step 1: List inbound importers**
 
 ```bash
 rg -n "from ['\"].*/(spatial|domain)/" src --glob "*.js"
@@ -246,7 +246,7 @@ rg -n "from ['\"].*/(spatial|domain)/" src --glob "*.js"
 
 Record every import path to update after the move.
 
-- [ ] **Step 2: Migrate spatial modules to `src/core/grid/*.ts`**
+- [x] **Step 2: Migrate spatial modules to `src/core/grid/*.ts`**
 
 Move and type (behavior-preserving):
 
@@ -261,7 +261,7 @@ Move and type (behavior-preserving):
 
 Replace JSDoc `@typedef` with TypeScript types in `src/core/grid/types.ts` (from `src/domain/types.js`).
 
-- [ ] **Step 3: Migrate domain modules into grid**
+- [x] **Step 3: Migrate domain modules into grid**
 
 | From | To |
 |------|----|
@@ -269,11 +269,11 @@ Replace JSDoc `@typedef` with TypeScript types in `src/core/grid/types.ts` (from
 | `src/domain/warehouseDocument.js` | `src/core/grid/warehouse-document.ts` |
 | `src/domain/siteAdapter.js` | `src/core/grid/site-adapter.ts` |
 
-- [ ] **Step 4: Write `src/core/grid/index.ts`**
+- [x] **Step 4: Write `src/core/grid/index.ts`**
 
 Re-export the public surface listed under **Interfaces**. Do not export test-only helpers.
 
-- [ ] **Step 5: Point consumers at relative `core/grid` imports**
+- [x] **Step 5: Point consumers at relative `core/grid` imports**
 
 Update every importer from Step 1 to a relative path into the package entry (no path alias required):
 
@@ -283,7 +283,7 @@ import { SpatialEngine, toDocument, GridConfig, cellToWorld } from '../core/grid
 
 Adjust `../` depth per file.
 
-- [ ] **Step 6: Assert no Three imports in grid**
+- [x] **Step 6: Assert no Three imports in grid**
 
 ```bash
 rg -n "from ['\"]three" src/core/grid
@@ -291,7 +291,7 @@ rg -n "from ['\"]three" src/core/grid
 
 Expected: no matches.
 
-- [ ] **Step 7: Run typecheck**
+- [x] **Step 7: Run typecheck**
 
 ```bash
 npm run typecheck
@@ -320,7 +320,7 @@ export { displayScaleFor /* existing export names */ } from './scaling/display-s
 
 `ModelRegistry.acquire(key, meta?)` must resolve files at `models/<key>.glb` via `assetUrl` (path change lands in Task 7; until then keep old path string in one constant `MODELS_PUBLIC_PREFIX`).
 
-- [ ] **Step 1: Introduce path constant**
+- [x] **Step 1: Introduce path constant**
 
 In `src/core/models/model-registry.ts`:
 
@@ -331,21 +331,21 @@ export const MODELS_PUBLIC_PREFIX = 'assets/models';
 // load: assetUrl(`${MODELS_PUBLIC_PREFIX}/${key}.glb`)
 ```
 
-- [ ] **Step 2: Migrate `ModelRegistry` to TypeScript under `src/core/models/`**
+- [x] **Step 2: Migrate `ModelRegistry` to TypeScript under `src/core/models/`**
 
 Preserve acquire/cache/clone-on-success and null-on-failure behavior.
 
-- [ ] **Step 3: Migrate `displayScale` and procedural model factories**
+- [x] **Step 3: Migrate `displayScale` and procedural model factories**
 
 Keep export names used by `trackedObjects.js`.
 
-- [ ] **Step 4: Add `index.ts` and update importers**
+- [x] **Step 4: Add `index.ts` and update importers**
 
 ```bash
 rg -n "ModelRegistry|displayScale|warehouse/models" src
 ```
 
-- [ ] **Step 5: Typecheck**
+- [x] **Step 5: Typecheck**
 
 ```bash
 npm run typecheck
@@ -374,19 +374,19 @@ export type { ScenarioConfig, PlaybackOptions, ShowcaseLayout } from './scenario
 
 `PlaybackController` constructor options remain: `mode`, `autoplay`, `loop`, `speed`, `respectReducedMotion`. Methods: `play`, `pause`, `restart`, and existing tick/seek API — preserve signatures from current class.
 
-- [ ] **Step 1: Define `scenario-types.ts` from current scenario objects**
+- [x] **Step 1: Define `scenario-types.ts` from current scenario objects**
 
 Mirror fields used in `src/scenarios/developer.js` and `ScenarioManager.resolve`: `id`, `layout`, `warehouse`, `software`, `playback`, `quality`, `site`.
 
-- [ ] **Step 2: Migrate `PlaybackController` and `ScenarioManager` to `src/core/scenarios/`**
+- [x] **Step 2: Migrate `PlaybackController` and `ScenarioManager` to `src/core/scenarios/`**
 
-- [ ] **Step 3: Export `index.ts` and update Showcase imports**
+- [x] **Step 3: Export `index.ts` and update Showcase imports**
 
 ```typescript
 import { ScenarioManager, PlaybackController } from '../core/scenarios';
 ```
 
-- [ ] **Step 4: Typecheck**
+- [x] **Step 4: Typecheck**
 
 ```bash
 npm run typecheck
@@ -412,23 +412,23 @@ npm run typecheck
 
 Single source of truth: `Showcase` still builds `document` + `SpatialEngine` via `toDocument` / `fromDocument`; both views read scenario/site/document — do not duplicate occupancy state in the 2D view.
 
-- [ ] **Step 1: Move scenario data to `src/data/scenarios/`**
+- [x] **Step 1: Move scenario data to `src/data/scenarios/`**
 
 `index.ts` exports registry map + default id matching PHP allowlist (`developer`).
 
-- [ ] **Step 2: Wire `ScenarioManager` to import registry from `../../data/scenarios`**
+- [x] **Step 2: Wire `ScenarioManager` to import registry from `../../data/scenarios`**
 
-- [ ] **Step 3: Migrate rendering-only warehouse pieces to `src/core/rendering/`**
+- [x] **Step 3: Migrate rendering-only warehouse pieces to `src/core/rendering/`**
 
 If unsure whether a file is “draw-only” vs orchestration, leave it under `app/views/view-3d/` (prefer fewer wrong splits).
 
-- [ ] **Step 4: Migrate `WarehouseScene` → `src/app/views/view-3d/`**
+- [x] **Step 4: Migrate `WarehouseScene` → `src/app/views/view-3d/`**
 
 Update imports to `core/grid`, `core/models`, `core/rendering`, `core/scenarios`.
 
-- [ ] **Step 5: Migrate software UI → `src/app/views/view-2d/`**
+- [x] **Step 5: Migrate software UI → `src/app/views/view-2d/`**
 
-- [ ] **Step 6: Migrate `Showcase`, `EventBus`, `SceneState` → `src/app/`**
+- [x] **Step 6: Migrate `Showcase`, `EventBus`, `SceneState` → `src/app/`**
 
 ```typescript
 // showcase.ts — bindSpatialDocument remains:
@@ -436,7 +436,7 @@ this.document = toDocument(site, { id: this.scenario.id });
 this.spatial = SpatialEngine.fromDocument(this.document);
 ```
 
-- [ ] **Step 7: Typecheck and build**
+- [x] **Step 7: Typecheck and build**
 
 ```bash
 npm run typecheck
@@ -456,7 +456,7 @@ npm run build
 **Interfaces:**
 - Produces: same public boot API as today (`initializeShowcase` / auto-boot on `.rtls-showcase`).
 
-- [ ] **Step 1: Write `src/main.ts`**
+- [x] **Step 1: Write `src/main.ts`**
 
 ```typescript
 import { Showcase } from './app/showcase';
@@ -507,13 +507,13 @@ if (document.readyState === 'loading') {
 
 (Adjust `dev-debugger` filename to whatever the migrated shared module is named.)
 
-- [ ] **Step 2: Point Vite `rollupOptions.input` at `src/main.ts`**
+- [x] **Step 2: Point Vite `rollupOptions.input` at `src/main.ts`**
 
-- [ ] **Step 3: Migrate shared utilities to TypeScript**
+- [x] **Step 3: Migrate shared utilities to TypeScript**
 
-- [ ] **Step 4: Delete `src/main.js` after `main.ts` works**
+- [x] **Step 4: Delete `src/main.js` after `main.ts` works**
 
-- [ ] **Step 5: Verify preview entry**
+- [x] **Step 5: Verify preview entry**
 
 ```bash
 npm run build
@@ -538,13 +538,13 @@ Expected: `preview.html` still opens; `.rtls-showcase` mounts without console er
 **Interfaces:**
 - WordPress zip = contents of `wordpress/` after `npm run build && npm run package:plugin`.
 
-- [ ] **Step 1: Move model files to `public/models/`**
+- [x] **Step 1: Move model files to `public/models/`**
 
 Update `public/models/README.md` paths. Remove empty `public/assets/models` if empty.
 
-- [ ] **Step 2: Set `MODELS_PUBLIC_PREFIX = 'models'`**
+- [x] **Step 2: Set `MODELS_PUBLIC_PREFIX = 'models'`**
 
-- [ ] **Step 3: Move PHP plugin into `wordpress/`**
+- [x] **Step 3: Move PHP plugin into `wordpress/`**
 
 ```text
 wordpress/
@@ -556,7 +556,7 @@ wordpress/
 
 Keep `RTLS_SHOWCASE_PATH` / URL helpers based on `__FILE__` so `dist/` is `wordpress/dist/`.
 
-- [ ] **Step 4: Add `scripts/package-plugin.mjs`**
+- [x] **Step 4: Add `scripts/package-plugin.mjs`**
 
 ```javascript
 import { cpSync, mkdirSync, rmSync, existsSync } from 'node:fs';
@@ -578,7 +578,7 @@ cpSync(dist, wpDist, { recursive: true });
 console.log('Copied dist/ → wordpress/dist/');
 ```
 
-- [ ] **Step 5: Add `scripts/validate.mjs` and npm scripts**
+- [x] **Step 5: Add `scripts/validate.mjs` and npm scripts**
 
 ```javascript
 import { existsSync } from 'node:fs';
@@ -608,7 +608,7 @@ console.log('validate: ok');
 "validate": "node scripts/validate.mjs"
 ```
 
-- [ ] **Step 6: Build and package**
+- [x] **Step 6: Build and package**
 
 ```bash
 npm run build
@@ -652,9 +652,9 @@ If adding `tsx` as a devDependency is acceptable for one runner; otherwise compi
 | `AGENTS.md` | Update required-reading paths |
 | `README.md` | Prerequisites, commands, zip/upload WP install |
 
-- [ ] **Step 1: Relocate self-checks to `tests/` and fix imports to `src/core/grid`**
+- [x] **Step 1: Relocate self-checks to `tests/` and fix imports to `src/core/grid`**
 
-- [ ] **Step 2: Install `tsx` and wire `check:spatial`**
+- [x] **Step 2: Install `tsx` and wire `check:spatial`**
 
 ```bash
 npm install -D tsx
@@ -663,11 +663,11 @@ npm run check:spatial
 
 Expected: all asserts pass (same as today’s spatial suite).
 
-- [ ] **Step 3: Restructure docs as in the table**
+- [x] **Step 3: Restructure docs as in the table**
 
 Do not create empty `docs/features/scenario-builder/` etc. Optional: one-line stubs only under `docs/features/` for areas that already have runtime code (grid, rendering, models, scenarios).
 
-- [ ] **Step 4: Update `AGENTS.md` and `README.md`**
+- [x] **Step 4: Update `AGENTS.md` and `README.md`**
 
 README must include:
 
@@ -675,7 +675,7 @@ README must include:
 2. `npm run package:plugin`
 3. Zip the `wordpress/` folder, upload in WP Admin → Plugins, activate, add `[rtls_showcase scenario="developer"]`
 
-- [ ] **Step 5: Add `docs/README.md` index linking the new folders**
+- [x] **Step 5: Add `docs/README.md` index linking the new folders**
 
 ---
 
@@ -684,7 +684,7 @@ README must include:
 **Files:**
 - Delete once nothing imports them: `src/spatial/`, `src/domain/`, `src/warehouse/` (if fully moved), `src/software/`, old `src/scenarios/`, old `src/core/*.js`, `src/shared/grid.js`, `src/effects/` if still empty, `public/assets/` if empty, root `rtls-showcase.php` / `includes/` after wordpress move
 
-- [ ] **Step 1: Confirm no leftover imports**
+- [x] **Step 1: Confirm no leftover imports**
 
 ```bash
 rg -n "src/spatial|src/domain|shared/grid|warehouse/assets/ModelRegistry|from ['\"]\\.\\./warehouse" src tests
@@ -692,11 +692,11 @@ rg -n "src/spatial|src/domain|shared/grid|warehouse/assets/ModelRegistry|from ['
 
 Expected: no stale paths (except intentional docs history).
 
-- [ ] **Step 2: Delete obsolete directories and empty `effects/`**
+- [x] **Step 2: Delete obsolete directories and empty `effects/`**
 
-- [ ] **Step 3: Remove `check:grid` script if file gone**
+- [x] **Step 3: Remove `check:grid` script if file gone**
 
-- [ ] **Step 4: Build + typecheck + spatial**
+- [x] **Step 4: Build + typecheck + spatial**
 
 ```bash
 npm run typecheck
@@ -710,17 +710,20 @@ npm run validate
 
 ### Task 10: Final validation checklist
 
-- [ ] **Step 1: `npm run typecheck`** — exit 0
-- [ ] **Step 2: `npm run check:spatial`** — exit 0
-- [ ] **Step 3: `npm run build`** — writes `dist/rtls-showcase.js` and `dist/rtls-showcase.css`
-- [ ] **Step 4: `npm run package:plugin` && `npm run validate`** — exit 0
-- [ ] **Step 5: Smoke `npm run dev`** — developer scenario shows floor/grid; no init errors
-- [ ] **Step 6: Update [`plan-guide.md`](plan-guide.md) General Progress** to `checked/total` matching this file’s checkboxes after implementation (during implementation, tick boxes here as you go)
-- [ ] **Step 7: Record deviations** at the bottom of this file under **Deviations** (add section if any path differed)
+- [x] **Step 1: `npm run typecheck`** — exit 0
+- [x] **Step 2: `npm run check:spatial`** — exit 0
+- [x] **Step 3: `npm run build`** — writes `dist/rtls-showcase.js` and `dist/rtls-showcase.css`
+- [x] **Step 4: `npm run package:plugin` && `npm run validate`** — exit 0
+- [x] **Step 5: Smoke `npm run dev`** — developer scenario shows floor/grid; no init errors
+- [x] **Step 6: Update [`plan-guide.md`](plan-guide.md) General Progress** to `checked/total` matching this file’s checkboxes after implementation (during implementation, tick boxes here as you go)
+- [x] **Step 7: Record deviations** at the bottom of this file under **Deviations** (add section if any path differed)
 
 ## Deviations
 
-_(None yet — implementers append bullet points here.)_
+- Task 10 smoke validation used a short-lived Vite server and HTTP checks for
+  `preview.html` and `/src/main.ts`; no browser/WebGL visual inspection was run.
+- Browser/WebGL interactive smoke not run in CI/agent; HTTP module resolution only.
+- `export:models` now runs via `tsx` for Node 20 TS imports.
 
 ## Unresolved (out of scope — later plan-guide rows)
 
@@ -735,4 +738,4 @@ _(None yet — implementers append bullet points here.)_
 
 ## Checkbox count (for plan-guide)
 
-There are **56** task checkboxes (`- [ ]`) under Tasks 1–10. Initial Progress: **0/56**.
+There are **56** task checkboxes under Tasks 1–10. Progress: **56/56** (all tasks done).

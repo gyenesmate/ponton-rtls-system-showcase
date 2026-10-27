@@ -1,5 +1,5 @@
 /**
- * Export current procedural warehouse objects to public/assets/models/*.glb
+ * Export current procedural warehouse objects to public/models/*.glb
  * Run: npm run export:models
  */
 import { mkdir, writeFile } from 'node:fs/promises';
@@ -31,14 +31,16 @@ if (!globalThis.FileReader) {
     }
   };
 }
-import { PALETTE } from '../src/shared/constants.js';
-import { createForklift } from '../src/warehouse/models/forklift.js';
-import { createWorker } from '../src/warehouse/models/worker.js';
-import { createAmrTransport } from '../src/warehouse/models/amr.js';
-import { createIndustrialStorageContainer } from '../src/warehouse/models/container.js';
+import { PALETTE } from '../src/shared/constants.ts';
+import {
+  createAmrTransport,
+  createForklift,
+  createIndustrialStorageContainer,
+  createWorker
+} from '../src/core/models/index.ts';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const outDir = join(__dirname, '..', 'public', 'assets', 'models');
+const outDir = join(__dirname, '..', 'public', 'models');
 
 const noopTags = {
   addTrackingTag() {
