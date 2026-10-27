@@ -1,0 +1,78 @@
+.rtls-showcase {
+  --rtls-height: 640px;
+  --rtls-min-height: 420px;
+  width: 100%;
+  height: var(--rtls-height);
+  min-height: var(--rtls-min-height);
+  position: relative;
+  overflow: hidden;
+  background: #ffffff;
+  border-radius: 16px;
+  isolation: isolate;
+  display: flex;
+  gap: 0;
+}
+
+.rtls-showcase__pane {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+}
+
+.rtls-showcase[data-layout="warehouse"] .rtls-showcase__warehouse,
+.rtls-showcase[data-layout="software"] .rtls-showcase__software-host {
+  flex: 1 1 100%;
+}
+
+.rtls-showcase[data-layout="split"] .rtls-showcase__warehouse,
+.rtls-showcase[data-layout="split"] .rtls-showcase__software-host {
+  flex: 1 1 50%;
+}
+
+.rtls-showcase[data-rtls-state="loading"]::after {
+  content: "Loading RTLS showcase…";
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: grid;
+  place-items: center;
+  color: #62687b;
+  font: 500 14px/1.4 Arial, sans-serif;
+  background: #ffffff;
+  pointer-events: none;
+}
+
+.rtls-showcase[data-rtls-state="error"]::after {
+  content: "The RTLS showcase could not be initialized.";
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: grid;
+  place-items: center;
+  color: #303442;
+  font: 600 14px/1.4 Arial, sans-serif;
+  background: #f5f6f8;
+  pointer-events: none;
+}
+
+.rtls-showcase[data-rtls-state="ready"]::after {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .rtls-showcase[data-layout="split"] {
+    flex-direction: column;
+  }
+
+  .rtls-showcase[data-layout="split"] .rtls-showcase__warehouse,
+  .rtls-showcase[data-layout="split"] .rtls-showcase__software-host {
+    flex: 1 1 50%;
+    min-height: 280px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rtls-showcase {
+    min-height: min(var(--rtls-min-height), 70vh);
+  }
+}

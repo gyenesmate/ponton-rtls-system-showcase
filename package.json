@@ -1,0 +1,20 @@
+{
+  "name": "rtls-showcase",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "check:grid": "node src/shared/grid.selfcheck.js",
+    "check:spatial": "node src/spatial/__checks__/runAll.js",
+    "export:models": "node scripts/export-procedural-models.mjs"
+  },
+  "dependencies": {
+    "three": "^0.160.0"
+  },
+  "devDependencies": {
+    "vite": "^6.2.0"
+  }
+}

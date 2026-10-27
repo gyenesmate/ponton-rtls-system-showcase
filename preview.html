@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RTLS Showcase Preview</title>
+  <style>
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      background: #111;
+      color: #d7d9dd;
+      font: 500 14px/1.4 Arial, sans-serif;
+    }
+
+    main {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      padding: 24px;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      margin: 0;
+      font: 700 20px/1.2 Arial, sans-serif;
+      color: #ffffff;
+    }
+
+    section {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .label {
+      color: #a2a5af;
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>RTLS Showcase Preview</h1>
+
+    <section>
+      <div class="label">scenario: developer (spatial sandbox)</div>
+      <div
+        class="rtls-showcase"
+        data-scenario="developer"
+        data-debug="true"
+        style="--rtls-height:640px;--rtls-min-height:360px;"
+        aria-label="Developer warehouse sandbox"
+      ></div>
+    </section>
+  </main>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

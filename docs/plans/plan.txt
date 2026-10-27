@@ -1,0 +1,57 @@
+RTLS showcase plugin application description (User made)
+
+General:
+- plugin should be wordpress compatible 
+- plugin should be bundled using vite
+- project run via npm run dev should enable local development
+- project should contain AGENTS.md file for AI entrypoint, rules for agents and descriptory files about the following:
+    - best practice guides for the used technologies (typescript, three.js)
+    - documentation should be given about: file structure, coding convetion, description of the plugin and feature based descriptions
+        - docs folder should be divided into general and feature subfolders
+- README.md file should describe the plugin briefly and should also contain description about the usage of the plugin this will include:
+    - how development happens - via preview.html and the following chain
+    - how to use as a wordpress plugin - this should include what need to be bundle or ziped and also the process of uploading and adding as a visible element in wordpress
+- PHP need to be on the newest version where the current breach has been eliminated
+- project needs to be uploaded to github
+
+Seperated Areas:
+
+-- Rendering --
+- Three.js will handle the rendering
+- Either models or given defined three.js shapes will be rendered which will all correspond to a object from the grid system
+- Three.js should not handle logic it should only render the inforamtion that it is given
+- Lighting and applying materails will be handled in this area as well
+- Helpers for development will be seperated in this area as well
+- The 2d software view will be also handled here - it can be just a upper view of the 3d view because the software has its own design
+
+-- Grid System --
+- A separate grid system should be used following defined constants as a background engine
+- This will take over the following task:
+    - Definition of the rendered planes for floor and walls
+    - The floor grid will be the main grid. This can be aggregated to more dimensional griding like walls
+    - Walls will have their own griding system but walls will be part of the floor grid
+    - Paths, zones and static objects
+    - Moving object will occupie the different cells when entering
+- It will handle collision prevention, zone entering and leaving
+- The cell size should be choosen in mind of visually not having object bug inside each other that should mean that all entitys exept zones should be no bigger than the cell it self
+- Zones should not be used for collision detection. Their purpose should be project specific
+
+-- Scenario driven showcase --
+- Every system should be able to accapte predefined type driven setups
+- That means there these scenarios will have the information about the different grid positions values
+- they will have different rules defined (e.g. playback: continoues, setable; orbital control)
+- Need to brainstrom about it but it might be the best to store is in json files
+- This will have a 3d and a software showcase - with the grid system in place these 2 views can be synced easily 
+
+-- Scenario Builder --
+- An interactive builder where the user can build own scenarios which can be saved
+- Uses the grid system for valid placements
+- Has a UI from which the user can select the object or enable the options for the scenarios
+
+-- Model Loader --
+- glb models should be used
+- there should be a limit for the models to maintain performance (Worth looking into WebGPU Renderer)
+- models should be scalled according to the world size
+
+-- Playback option --
+- Need further planning cant imagen how it would look like right now 
