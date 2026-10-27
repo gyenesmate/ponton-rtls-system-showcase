@@ -4,19 +4,21 @@ Short map of the work described in [`plan.txt`](plan.txt).
 
 **Progress** is the ratio of checked task boxes in that area’s plan (`checked/total`). An area with no plan document yet is marked `no plan`.
 
-| Area | Progress |
-|------|----------|
-| General | no plan |
-| Rendering | no plan |
-| Grid system | no plan |
-| Scenario-driven showcase | no plan |
-| Scenario builder | no plan |
-| Model loader | no plan |
-| Playback | no plan |
+| Area | Progress | Plan |
+|------|----------|------|
+| General | 0/56 | [`general-refactor.md`](general-refactor.md) |
+| Rendering | no plan | — |
+| Grid system | no plan | — |
+| Scenario-driven showcase | no plan | — |
+| Scenario builder | no plan | — |
+| Model loader | no plan | — |
+| Playback | no plan | — |
 
 ## General
 
-WordPress-compatible plugin, bundled with Vite and developed through `npm run dev` and `preview.html`. Includes `AGENTS.md`, docs split into general and feature folders, technology guides, a README that covers local development and installing the plugin in WordPress (what to zip, how to upload, how it appears on a page), a current PHP requirement, and publishing the repo to GitHub.
+WordPress-compatible plugin, bundled with Vite and developed through `npm run dev` and `preview.html`. Includes `AGENTS.md`, docs split into architecture / development / deployment / technology-guides / features, technology guides, a README that covers local development and installing the plugin in WordPress (what to zip, how to upload, how it appears on a page), PHP 7.4, and publishing the repo to GitHub (user-owned).
+
+The active implementation plan also covers the application-based TypeScript `src/` layout, `wordpress/` packaging, and `public/models/` — see [`general-refactor.md`](general-refactor.md).
 
 ## Rendering
 
