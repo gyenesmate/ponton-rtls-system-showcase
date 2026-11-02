@@ -8,7 +8,7 @@ import {
   wallYaw,
   cellKey,
   parseCellKey
-} from '../../src/core/grid';
+} from '../../src/showcase-package/grid-system/grid-system.index';
 
 const eps = 1e-9;
 

@@ -31,13 +31,13 @@ if (!globalThis.FileReader) {
     }
   };
 }
-import { PALETTE } from '../src/shared/constants.ts';
+import { PALETTE } from '../src/showcase-package/shared/shared.const.ts';
 import {
   createAmrTransport,
   createForklift,
   createIndustrialStorageContainer,
   createWorker
-} from '../src/core/models/index.ts';
+} from '../src/showcase-package/model-loading/model-loading.index.ts';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const outDir = join(__dirname, '..', 'public', 'models');

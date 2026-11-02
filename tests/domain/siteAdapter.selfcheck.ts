@@ -5,9 +5,9 @@ import {
   migrateWarehouseDocument,
   toDocument,
   toSite
-} from '../../src/core/grid';
-import { defaultWarehouseSite } from '../../src/data/scenarios/sites/default-warehouse-site';
-import { developerScenario } from '../../src/data/scenarios/developer';
+} from '../../src/showcase-package/grid-system/grid-system.index';
+import { defaultWarehouseSite } from '../../src/app/data/scenarios/sites/default-warehouse-site';
+import { developerScenario } from '../../src/app/data/scenarios/developer';
 
 function assert(condition: unknown, message: string): asserts condition {
   if (!condition) {

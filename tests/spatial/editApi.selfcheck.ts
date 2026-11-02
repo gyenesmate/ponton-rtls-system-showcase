@@ -1,6 +1,6 @@
-import { SpatialEngine, toDocument, type EntityBase } from '../../src/core/grid';
-import { developerScenario } from '../../src/data/scenarios/developer';
-import { defaultWarehouseSite } from '../../src/data/scenarios/sites/default-warehouse-site';
+import { SpatialEngine, toDocument, type EntityBase } from '../../src/showcase-package/grid-system/grid-system.index';
+import { developerScenario } from '../../src/app/data/scenarios/developer';
+import { defaultWarehouseSite } from '../../src/app/data/scenarios/sites/default-warehouse-site';
 
 function assert(condition: unknown, message: string): asserts condition {
   if (!condition) {

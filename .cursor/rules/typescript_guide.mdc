@@ -1,0 +1,54 @@
+---
+description: Modern TypeScript usage for this project
+alwaysApply: true
+---
+
+# TypeScript guide
+
+Follow current TypeScript (5.x+) practice. Prefer the type checker over runtime cleverness.
+
+## Types first
+
+- Prefer `unknown` over `any`; narrow before use.
+- Use `interface` for object shapes that may extend; use `type` for unions, intersections, mapped/conditional types.
+- Prefer `readonly` / `Readonly<>` for data that must not mutate at the type level.
+- Prefer `as const` for literal tuples/objects that should stay narrow.
+- Prefer `satisfies` when a value must match a contract without widening its inferred type.
+- Prefer `const` type parameters on generic helpers that should preserve literals.
+- Prefer discriminated unions over optional flag soup.
+- Prefer exact return types at module boundaries; avoid leaking huge inferred object types from public APIs.
+
+## Modules & imports
+
+- Use ES modules only (`import` / `export`).
+- Prefer named exports; default exports only when a framework requires them.
+- Import types with `import type` when the value is erased.
+- Do not use `require` or namespace imports except for established third-party prefixes (e.g. `THREE` if needed).
+
+## Naming (identifiers)
+
+- `UpperCamelCase` — classes, types, interfaces, enums.
+- `lowerCamelCase` — variables, functions, methods, parameters.
+- `CONSTANT_CASE` — true constants and enum members.
+- Do not prefix interfaces with `I`. Do not use leading/trailing `_` on identifiers.
+- Names carry meaning; do not encode the type in the name (`userList: User[]` → `users`).
+
+## Nullability & errors
+
+- Prefer explicit `| null` / `| undefined` over lying types.
+- Prefer early returns over deep nesting.
+- When catching, type as `unknown` and narrow; rethrow with `cause` when wrapping.
+- Do not swallow errors at trust boundaries (loaders, plugin bootstrap, spatial edits).
+
+## Classes vs functions
+
+- Prefer plain functions and data for pure logic.
+- Use classes when there is clear identity + lifecycle state (engines, controllers, registries).
+- Prefer `readonly` fields set in the constructor over reassignment.
+
+## Project fit
+
+- Keep public types at feature boundaries (`*.types.ts` / package indexes).
+- Scenario/site data stays declarative and typed; do not push simulation into config files.
+- Grid / spatial code stays Three-free and DOM-free.
+- Match `docs/general/CODE_CONVENTIONS.md` and `FILE_STRUCTURES.md` for file roles and layout.

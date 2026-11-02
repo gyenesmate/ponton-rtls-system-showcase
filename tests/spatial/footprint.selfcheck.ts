@@ -1,5 +1,5 @@
-import { GridConfig, cellKey, worldToCell } from '../../src/core/grid';
-import { footprintCorners, rasterizeFootprint } from '../../src/core/grid/footprint';
+import { GridConfig, cellKey, worldToCell } from '../../src/showcase-package/grid-system/grid-system.index';
+import { footprintCorners, rasterizeFootprint } from '../../src/showcase-package/grid-system/grid-system-footprint.util';
 
 function assert(condition: unknown, message: string): asserts condition {
   if (!condition) {
