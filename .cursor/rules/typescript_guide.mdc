@@ -1,0 +1,80 @@
+---
+description: Modern TypeScript usage and coding conventions
+alwaysApply: true
+---
+
+# TypeScript Guide
+
+Follow modern TypeScript (5.x+) practices. Prefer explicit contracts, type safety, and maintainable code over runtime cleverness.
+
+## Types first
+
+- Prefer `unknown` over `any`; narrow types before use.
+- Use `interface` for object shapes that may be extended; use `type` for unions, intersections, mapped types, and conditional types.
+- Prefer `readonly` / `Readonly<T>` for data that should not be mutated.
+- Use `as const` for literal objects and tuples that should retain narrow types.
+- Prefer `satisfies` when validating a value against a contract without widening its inferred type.
+- Use `const` type parameters for generic helpers that should preserve literal types.
+- Prefer discriminated unions over collections of optional flags.
+- Define explicit return types at public module boundaries; avoid unnecessarily exposing complex inferred types.
+- Avoid unnecessary type assertions and non-null assertions.
+
+## Modules & imports
+
+- Use ES modules only (`import` / `export`).
+- Prefer named exports; use default exports only when required by a framework or third-party integration.
+- Use `import type` for imports used exclusively as types.
+- Avoid `require` and namespace imports, except for established third-party conventions (e.g. `THREE`).
+- Avoid circular dependencies between modules.
+- Respect dependency direction: reusable foundation code must not import application/plugin wiring; the application may depend on the foundation.
+
+## Naming conventions
+
+- `UpperCamelCase` — classes, types, interfaces, enums.
+- `lowerCamelCase` — variables, functions, methods, parameters, and properties.
+- `CONSTANT_CASE` — module-level constants representing fixed values.
+- Enum members should use `UpperCamelCase`.
+- Do not prefix interfaces with `I`.
+- Do not use leading or trailing underscores on identifiers.
+- Use meaningful names that describe the value or responsibility rather than its type (`users` instead of `userList`).
+
+## Nullability & errors
+
+- Represent nullable values explicitly with `| null` or `| undefined`.
+- Prefer early returns over deeply nested conditional logic.
+- Treat caught errors as `unknown` and narrow before accessing their properties.
+- Preserve the original error using `cause` when wrapping errors.
+- Do not silently swallow errors at system boundaries (bootstrap, loaders, config resolution, data mutations).
+- Handle expected failures explicitly and provide useful error context.
+
+## Runtime validation
+
+- TypeScript types do not replace runtime validation.
+- Validate external data at system boundaries before it enters domain logic.
+- Validate parsed JSON, host/plugin configuration, markup attributes, and imported declarative data before use.
+- Prefer guard functions or schema-style checks for complex configuration structures.
+- Never use type assertions as a substitute for validating untrusted data.
+
+## Classes vs functions
+
+- Prefer plain functions and data structures for pure logic.
+- Use classes when there is meaningful identity, encapsulated state, or lifecycle management.
+- Avoid classes used solely as namespaces or collections of static methods.
+- Prefer composition over inheritance; avoid unnecessary inheritance hierarchies.
+- Prefer `readonly` fields initialized in the constructor when reassignment is not required.
+
+## Async operations
+
+- Prefer `async/await` over deeply nested promise chains.
+- Handle loading, failure, and cancellation explicitly.
+- Avoid unhandled promise rejections.
+- Use `AbortController` when supported asynchronous operations need cancellation.
+- Prevent stale asynchronous results from modifying disposed or superseded owners.
+- Ensure asynchronous resources are cleaned up when their owning lifecycle ends.
+
+## Domain fit
+
+- Keep public types at feature and module boundaries; keep internal types close to their consumers.
+- Keep declarative configuration strongly typed; do not push simulation or rendering logic into config.
+- Keep spatial / document logic free of rendering engines and DOM APIs.
+- Prefer small, focused modules; put cross-cutting helpers only where multiple features truly share them.

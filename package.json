@@ -6,15 +6,21 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "typecheck": "tsc --noEmit",
     "preview": "vite preview",
-    "check:grid": "node src/shared/grid.selfcheck.js",
-    "check:spatial": "node src/spatial/__checks__/runAll.js",
-    "export:models": "node scripts/export-procedural-models.mjs"
+    "check:spatial": "tsx tests/spatial/runAll.ts",
+    "export:models": "tsx scripts/export-procedural-models.mjs",
+    "package:plugin": "node scripts/package-plugin.mjs",
+    "validate": "node scripts/validate.mjs"
   },
   "dependencies": {
     "three": "^0.160.0"
   },
   "devDependencies": {
+    "@types/node": "^26.6.5",
+    "@types/three": "^0.186.0",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
     "vite": "^6.2.0"
   }
 }

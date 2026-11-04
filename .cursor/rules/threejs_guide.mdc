@@ -1,0 +1,75 @@
+---
+description: Three.js rendering, lifecycle, and performance conventions
+alwaysApply: true
+---
+
+# Three.js Guide
+
+Rendering is draw-only. Placement, occupancy, validation, and scenario rules must remain outside Three.js.
+
+## Rendering boundaries
+
+- Do not implement business rules, spatial validation, collision detection, or zone logic inside scene or view code.
+- Consume documents, typed view models, or spatial results from the spatial layer or application orchestration — not invent them in the renderer.
+- Keep mesh/light/material builders in the reusable rendering layer; keep host/plugin wiring out of that layer.
+- Do not expose Three.js objects through spatial / document APIs.
+- Keep coordinate conversion between spatial data and Three.js objects inside the rendering boundary.
+
+## Resource ownership & lifecycle
+
+- Every GPU resource must have a clear owner and lifecycle.
+- Dispose geometries, materials, textures, render targets, controls, and renderers when their owning lifecycle ends.
+- Traverse scene groups and dispose owned child resources; do not drop references and rely on garbage collection.
+- Do not dispose shared resources from individual consumers.
+- Shared asset caches must own cached templates; scene-owned clones dispose with the scene.
+- Prevent double-disposal and accidental disposal of resources still in use.
+- Clean up event listeners, observers, animation loops, and other external resources during teardown.
+
+## Geometry & materials
+
+- Reuse geometries and materials when multiple objects share appearance or structure.
+- Prefer `InstancedMesh` or batched rendering for repeated objects when count warrants it.
+- Avoid creating duplicate materials and geometries unnecessarily.
+- Avoid unnecessary scene graph nesting.
+- Keep material and geometry configuration reusable where appropriate.
+
+## Asset loading
+
+- Prefer compressed GLB (Draco / Meshopt when appropriate).
+- Respect model-count and asset-size budgets.
+- Scale models to the project’s world-unit conventions.
+- Keep orientation and origin conventions consistent (document them in feature docs, not by scattering magic numbers).
+- Cache loaded templates and clone them for instances instead of reloading.
+- Handle load failures gracefully with suitable fallbacks (procedural geometry is fine).
+- Failed or cancelled loads must not leave partially initialized resources behind.
+
+## Coordinate systems
+
+- Use one consistent world-coordinate and orientation convention across rendering.
+- Centralize grid ↔ world conversion; do not reimplement it per mesh.
+- Do not introduce Three.js types into the spatial / document layer.
+
+## Frame loop & performance
+
+- Avoid allocating expensive objects inside frequently executed frame callbacks.
+- Mutate existing objects; do not rebuild scene graphs every frame.
+- Prefer one shared clock / animation-loop owner per mount root.
+- Skip work for hidden or disposed views.
+- Use demand-based rendering when continuous animation is not required.
+- Keep light counts low; prefer baked or simplified shadows when visuals allow.
+- Avoid unnecessary shadow-map updates and expensive post-processing.
+- Cap pixel ratio; prefer quality presets over unbounded device pixel ratios.
+- Multiple mount roots must keep independent renderer and lifecycle state.
+
+## Debugging
+
+- Debug grids, helpers, axes, and overlays must be opt-in.
+- Debug resources follow the same ownership and disposal rules as production resources.
+- Prefer `renderer.info` and simple diagnostic flags over permanent overlays.
+- Do not leave debug tooling on in production unless explicitly required.
+
+## Domain fit
+
+- Application views own mount-root lifecycle and host integration.
+- Reusable rendering and model-loading stay application-agnostic.
+- When structure or feature behavior is unclear, consult project docs — not hard-coded paths in these rules.
