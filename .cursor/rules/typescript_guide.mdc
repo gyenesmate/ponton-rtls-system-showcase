@@ -1,54 +1,80 @@
 ---
-description: Modern TypeScript usage for this project
+description: Modern TypeScript usage and coding conventions
 alwaysApply: true
 ---
 
-# TypeScript guide
+# TypeScript Guide
 
-Follow current TypeScript (5.x+) practice. Prefer the type checker over runtime cleverness.
+Follow modern TypeScript (5.x+) practices. Prefer explicit contracts, type safety, and maintainable code over runtime cleverness.
 
 ## Types first
 
-- Prefer `unknown` over `any`; narrow before use.
-- Use `interface` for object shapes that may extend; use `type` for unions, intersections, mapped/conditional types.
-- Prefer `readonly` / `Readonly<>` for data that must not mutate at the type level.
-- Prefer `as const` for literal tuples/objects that should stay narrow.
-- Prefer `satisfies` when a value must match a contract without widening its inferred type.
-- Prefer `const` type parameters on generic helpers that should preserve literals.
-- Prefer discriminated unions over optional flag soup.
-- Prefer exact return types at module boundaries; avoid leaking huge inferred object types from public APIs.
+- Prefer `unknown` over `any`; narrow types before use.
+- Use `interface` for object shapes that may be extended; use `type` for unions, intersections, mapped types, and conditional types.
+- Prefer `readonly` / `Readonly<T>` for data that should not be mutated.
+- Use `as const` for literal objects and tuples that should retain narrow types.
+- Prefer `satisfies` when validating a value against a contract without widening its inferred type.
+- Use `const` type parameters for generic helpers that should preserve literal types.
+- Prefer discriminated unions over collections of optional flags.
+- Define explicit return types at public module boundaries; avoid unnecessarily exposing complex inferred types.
+- Avoid unnecessary type assertions and non-null assertions.
 
 ## Modules & imports
 
 - Use ES modules only (`import` / `export`).
-- Prefer named exports; default exports only when a framework requires them.
-- Import types with `import type` when the value is erased.
-- Do not use `require` or namespace imports except for established third-party prefixes (e.g. `THREE` if needed).
+- Prefer named exports; use default exports only when required by a framework or third-party integration.
+- Use `import type` for imports used exclusively as types.
+- Avoid `require` and namespace imports, except for established third-party conventions (e.g. `THREE`).
+- Avoid circular dependencies between modules.
+- Respect dependency direction: reusable foundation code must not import application/plugin wiring; the application may depend on the foundation.
 
-## Naming (identifiers)
+## Naming conventions
 
 - `UpperCamelCase` — classes, types, interfaces, enums.
-- `lowerCamelCase` — variables, functions, methods, parameters.
-- `CONSTANT_CASE` — true constants and enum members.
-- Do not prefix interfaces with `I`. Do not use leading/trailing `_` on identifiers.
-- Names carry meaning; do not encode the type in the name (`userList: User[]` → `users`).
+- `lowerCamelCase` — variables, functions, methods, parameters, and properties.
+- `CONSTANT_CASE` — module-level constants representing fixed values.
+- Enum members should use `UpperCamelCase`.
+- Do not prefix interfaces with `I`.
+- Do not use leading or trailing underscores on identifiers.
+- Use meaningful names that describe the value or responsibility rather than its type (`users` instead of `userList`).
 
 ## Nullability & errors
 
-- Prefer explicit `| null` / `| undefined` over lying types.
-- Prefer early returns over deep nesting.
-- When catching, type as `unknown` and narrow; rethrow with `cause` when wrapping.
-- Do not swallow errors at trust boundaries (loaders, plugin bootstrap, spatial edits).
+- Represent nullable values explicitly with `| null` or `| undefined`.
+- Prefer early returns over deeply nested conditional logic.
+- Treat caught errors as `unknown` and narrow before accessing their properties.
+- Preserve the original error using `cause` when wrapping errors.
+- Do not silently swallow errors at system boundaries (bootstrap, loaders, config resolution, data mutations).
+- Handle expected failures explicitly and provide useful error context.
+
+## Runtime validation
+
+- TypeScript types do not replace runtime validation.
+- Validate external data at system boundaries before it enters domain logic.
+- Validate parsed JSON, host/plugin configuration, markup attributes, and imported declarative data before use.
+- Prefer guard functions or schema-style checks for complex configuration structures.
+- Never use type assertions as a substitute for validating untrusted data.
 
 ## Classes vs functions
 
-- Prefer plain functions and data for pure logic.
-- Use classes when there is clear identity + lifecycle state (engines, controllers, registries).
-- Prefer `readonly` fields set in the constructor over reassignment.
+- Prefer plain functions and data structures for pure logic.
+- Use classes when there is meaningful identity, encapsulated state, or lifecycle management.
+- Avoid classes used solely as namespaces or collections of static methods.
+- Prefer composition over inheritance; avoid unnecessary inheritance hierarchies.
+- Prefer `readonly` fields initialized in the constructor when reassignment is not required.
 
-## Project fit
+## Async operations
 
-- Keep public types at feature boundaries (`*.types.ts` / package indexes).
-- Scenario/site data stays declarative and typed; do not push simulation into config files.
-- Grid / spatial code stays Three-free and DOM-free.
-- Match `docs/general/CODE_CONVENTIONS.md` and `FILE_STRUCTURES.md` for file roles and layout.
+- Prefer `async/await` over deeply nested promise chains.
+- Handle loading, failure, and cancellation explicitly.
+- Avoid unhandled promise rejections.
+- Use `AbortController` when supported asynchronous operations need cancellation.
+- Prevent stale asynchronous results from modifying disposed or superseded owners.
+- Ensure asynchronous resources are cleaned up when their owning lifecycle ends.
+
+## Domain fit
+
+- Keep public types at feature and module boundaries; keep internal types close to their consumers.
+- Keep declarative configuration strongly typed; do not push simulation or rendering logic into config.
+- Keep spatial / document logic free of rendering engines and DOM APIs.
+- Prefer small, focused modules; put cross-cutting helpers only where multiple features truly share them.
